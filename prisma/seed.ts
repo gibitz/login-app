@@ -1,27 +1,33 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Iniciando seed...");
+  console.log("iniciando seed...");
 
-  // Dados fictícios
+  // Gera hash de senha padrão
+  const defaultPassword = await bcrypt.hash("123456", 10);
+
   const users = [
     {
       email: "admin@example.com",
-      username: "admin",
+      password: defaultPassword,
+      admin: true,
     },
     {
       email: "john.doe@example.com",
-      username: "johndoe",
+      password: defaultPassword,
+      admin: false,
     },
     {
       email: "jane.doe@example.com",
-      username: "janedoe",
+      password: defaultPassword,
+      admin: false,
     },
   ];
 
-  // upsert = cria se não existir, senão ignora
+  // Cria ou ignora caso já exista
   for (const user of users) {
     await prisma.user.upsert({
       where: { email: user.email },
@@ -30,7 +36,7 @@ async function main() {
     });
   }
 
-  console.log("✅ Seed concluído com sucesso!");
+  console.log("seed concluído com sucesso!");
 }
 
 main()

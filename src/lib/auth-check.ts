@@ -1,0 +1,40 @@
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import { prisma } from "./prisma";
+
+const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET || "itsasecretkey";
+
+export async function getAuthenticatedUser() {
+    const token = (await cookies()).get("token")?.value;
+    
+    if (!token) return null;
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET) as {
+            id: number;
+            email: string;
+            admin: boolean;
+        };
+        console.log(decoded.admin)
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.id },
+            select: { id: true, email: true, admin: true },
+        });
+
+        return user
+            ? { id: user.id, email: user.email, admin: user.admin }
+            : null;
+    } catch {
+        console.log("err");
+        return null;
+    }
+}
+
+export async function requireAdminUser() {
+    const user = await getAuthenticatedUser();
+    if (!user || !user.admin) {
+        console.log("Acesso negado: usuário não é administrador.");
+        return null;
+    }
+    return user;
+}

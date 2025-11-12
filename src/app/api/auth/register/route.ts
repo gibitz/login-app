@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
-import { registerSchema } from "@/lib/validations/register";
-
-export async function GET() {
-    return NextResponse.json({ status: 200, message: "OK" });
-}
+import { inputSchema } from "@/lib/validations/input";
+import { registerUser } from "@/lib/auth";
 
 export async function POST(request: Request) {
     try {
-        const { email, password, username } = await request.json();
-        const parsed = registerSchema.safeParse({ email, password, username });
+        const body = await request.json();
+        const parsed = inputSchema.safeParse(body);
 
         if (!parsed.success) {
             return NextResponse.json(
@@ -17,14 +14,23 @@ export async function POST(request: Request) {
             );
         }
 
+        const { email, password } = parsed.data;
+
+        const newUser = await registerUser(email, password);
+
         return NextResponse.json(
             {
-                message: "Usuário cadastrado com sucesso",
-                user: { email, username },
+                message: "Usuário registrado com sucesso",
+                user: newUser,
             },
             { status: 201 }
         );
-    } catch (e) {
+    } catch (e: any) {
+        if (e.message?.includes("já existe")) {
+            return NextResponse.json({ error: e.message }, { status: 409 });
+        }
+
+        console.error(e);
         return NextResponse.json(
             { error: "Erro ao processar a solicitação" },
             { status: 500 }
