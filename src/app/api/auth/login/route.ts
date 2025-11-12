@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { inputSchema } from "@/lib/validations/input";
+import { inputSchema } from "@/lib/validations";
 import { loginUser } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -16,11 +16,13 @@ export async function POST(request: Request) {
 
         const { email, password } = parsed.data;
 
-        const {user, token} = await loginUser(email, password);
+        const { user, token } = await loginUser(email, password);
 
         const response = NextResponse.json(
             {
-                message: "Login bem-sucedido", user },
+                message: "Login bem-sucedido",
+                user,
+            },
             { status: 200 }
         );
 
@@ -36,7 +38,6 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: e.message }, { status: 401 });
         }
 
-        console.error(e);
         return NextResponse.json(
             { error: "Erro ao processar a solicitação" },
             { status: 500 }

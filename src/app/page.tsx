@@ -1,10 +1,10 @@
 import {redirect} from "next/navigation";
-import { requireAdminUser } from "@/lib/auth-check";
+import { requireAdminUser } from "@/lib/auth/guard";
 
 export default async function Home() {
-    const user = await requireAdminUser();
+    const admin = await requireAdminUser();
 
-    if (!user) redirect("/login");
+    if (!admin) redirect("/login");
 
     return <div className="pt-20">Home Page</div>;
 }

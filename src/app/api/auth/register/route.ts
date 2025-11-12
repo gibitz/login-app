@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { inputSchema } from "@/lib/validations/input";
-import { registerUser } from "@/lib/auth";
+import { inputSchema } from "@/lib/validations";
+import { loginUser, registerUser } from "@/lib/auth";
 
 export async function POST(request: Request) {
     try {
@@ -18,19 +18,28 @@ export async function POST(request: Request) {
 
         const newUser = await registerUser(email, password);
 
-        return NextResponse.json(
+        const { token } = await loginUser(email, password);
+
+        const response =  NextResponse.json(
             {
                 message: "Usuário registrado com sucesso",
                 user: newUser,
             },
             { status: 201 }
         );
+
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        return response;
     } catch (e: any) {
         if (e.message?.includes("já existe")) {
             return NextResponse.json({ error: e.message }, { status: 409 });
         }
 
-        console.error(e);
         return NextResponse.json(
             { error: "Erro ao processar a solicitação" },
             { status: 500 }
