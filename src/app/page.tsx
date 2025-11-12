@@ -1,10 +1,8 @@
-import {redirect} from "next/navigation";
-import { requireAdminUser } from "@/lib/auth/guard";
+"use client";
 
-export default async function Home() {
-    const admin = await requireAdminUser();
+import {useRouter} from "next/navigation";
+import type { AuthInput } from "@/lib/validations";
 
-    if (!admin) redirect("/login");
-
-    return <div className="pt-20">Home Page</div>;
+export default function HomePage() {
+    return <div className="pt-20">HomePage</div>
 }

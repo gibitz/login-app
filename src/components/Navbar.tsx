@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAuthenticatedUser } from "@/lib/auth/guard";
-import LogoutButton from "@/components/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton";
 
 export default async function Navbar() {
     const user = await getAuthenticatedUser();

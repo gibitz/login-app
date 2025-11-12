@@ -3,17 +3,17 @@
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputSchema, type Input } from "@/lib/validations/input";
+import { authInputSchema, type AuthInput } from "@/lib/validations/authInput";
 import AuthButton from "@/components/ui/AuthButton";
 
 interface AuthCardProps {
     type: "login" | "register";
-    onSubmitAction: (values: Input) => Promise<void>;
+    onSubmitAction: (values: AuthInput) => Promise<void>;
 }
 
 export function AuthCard({ type, onSubmitAction }: AuthCardProps) {
-    const form = useForm<Input>({
-        resolver: zodResolver(inputSchema),
+    const form = useForm<AuthInput>({
+        resolver: zodResolver(authInputSchema),
         defaultValues: {
             email: "",
             password: "",

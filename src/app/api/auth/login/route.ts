@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { inputSchema } from "@/lib/validations";
+import { authInputSchema} from "@/lib/validations";
 import { loginUser } from "@/lib/auth";
 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const parsed = inputSchema.safeParse(body);
+        const parsed = authInputSchema.safeParse(body);
 
         if (!parsed.success) {
             return NextResponse.json(

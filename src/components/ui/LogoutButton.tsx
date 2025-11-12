@@ -35,7 +35,7 @@ function LogoutButton() {
         <button
             onClick={handleLogout}
             disabled={loading}
-            className="bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg"
+            className="bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-200"
         >
             {loading ? "Saindo..." : "Sair"}
         </button>

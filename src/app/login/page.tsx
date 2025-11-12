@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { AuthCard } from "@/components/AuthCard";
-import type { Input } from "@/lib/validations";
+import { AuthCard } from "@/components/ui/AuthCard";
+import type { AuthInput } from "@/lib/validations";
 
 export default function LoginPage() {
     const router = useRouter();
 
-    async function onSubmit(values: Input) {
+    async function onSubmit(values: AuthInput) {
         try {
             const res = await fetch("/api/auth/login", {
                 method: "POST",
