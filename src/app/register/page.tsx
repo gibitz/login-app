@@ -5,31 +5,29 @@ import { AuthCard } from "@/components/ui/AuthCard";
 import type { AuthInput } from "@/lib/validations";
 
 export default function RegisterPage() {
-    const router = useRouter();
+  const router = useRouter();
 
-    async function onSubmit(values: AuthInput) {
-        try {
-            const res = await fetch("/api/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-            });
+  async function onSubmit(values: AuthInput) {
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
-            const data = await res.json();
-            if (!res.ok) {
-                alert(data.error || "Erro ao registrar");
-                return;
-            }
-            alert("Registrado com sucesso!");
-            router.refresh();
-            console.log("Usuario:", data.user);
-        } catch (e) {
-            alert("Erro ao registrar");
-            console.error(e);
-        }
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Erro ao registrar");
+        return;
+      }
+      alert("Registrado com sucesso!");
+      router.refresh();
+    } catch {
+      alert("Erro ao registrar");
     }
-    
-    return <AuthCard type="register" onSubmitAction={onSubmit} />;
+  }
+
+  return <AuthCard type="register" onSubmitAction={onSubmit} />;
 }
