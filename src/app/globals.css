@@ -121,6 +121,8 @@
     --shadow-2xl: 0px 5px 10px -2px hsl(0 0% 0% / 0.25);
 }
 
+
+
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -189,3 +191,4 @@
         cursor: pointer;
     }
 }
+

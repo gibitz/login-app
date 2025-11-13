@@ -23,7 +23,8 @@ export default function LoginPage() {
                 return;
             }
             alert("Login bem-sucedido!");
-            router.refresh();
+            window.dispatchEvent(new CustomEvent("authChanged", { detail: data.user }));
+            router.push("/");
             console.log("Usuário:", data.user);
         } catch (e) {
             alert("Erro ao fazer login");

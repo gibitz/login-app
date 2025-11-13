@@ -36,11 +36,13 @@ export async function loginUser(email: string, password: string) {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw new Error("Usuário ou senha inválidos");
 
+    
     const token = signToken({
         id: user.id,
         email: user.email,
         admin: user.admin,
     });
+    
 
     return {
         user: { id: user.id, email: user.email, admin: user.admin },
