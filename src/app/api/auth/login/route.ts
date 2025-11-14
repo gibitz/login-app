@@ -18,13 +18,7 @@ export async function POST(request: Request) {
 
         const { user, token } = await loginUser(email, password);
 
-        const response = NextResponse.json(
-            {
-                message: "Login bem-sucedido",
-                user,
-            },
-            { status: 200 }
-        );
+        const response = NextResponse.redirect(new URL("/", request.url));
 
         response.cookies.set("token", token, {
             httpOnly: true,

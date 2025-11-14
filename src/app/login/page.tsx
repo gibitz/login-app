@@ -1,11 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { AuthCard } from "@/components/ui/AuthCard";
 import type { AuthInput } from "@/lib/validations";
 
 export default function LoginPage() {
-    const router = useRouter();
+    
 
     async function onSubmit(values: AuthInput) {
         try {
@@ -17,18 +16,12 @@ export default function LoginPage() {
                 body: JSON.stringify(values),
             });
 
-            const data = await res.json();
-            if (!res.ok) {
-                alert(data.error || "Erro ao fazer login");
+            if (res.redirected) {
+                window.location.href = res.url;
                 return;
             }
-            alert("Login bem-sucedido!");
-            setTimeout(() => {
-                window.dispatchEvent(
-                    new CustomEvent("authChanged", { detail: data.user })
-                );
-                router.replace("/");
-            }, 300);
+            const data = await res.json();
+            if (!res.ok) alert(data.error || "Erro ao fazer login");
         } catch {
             alert("Erro ao fazer login");
         }
