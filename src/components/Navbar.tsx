@@ -32,20 +32,20 @@ export default function Navbar() {
         }
     }
     useEffect(() => {
-        if (!document.cookie.includes("token=")) {
-            setLoading(false);
-            return;
-        }
-
-        fetchUser();
+        const timer = setTimeout(() => {
+            fetchUser();
+        }, 150);
+        return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
         const onAuthChanged = (e: Event) => {
             const ev = e as CustomEvent;
-            setUser(ev.detail ?? null);
+            const updatedUser = ev.detail ?? null;
+            setUser(updatedUser);
             setLoading(false);
         };
+
         window.addEventListener("authChanged", onAuthChanged as EventListener);
         return () =>
             window.removeEventListener(
