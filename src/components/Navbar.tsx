@@ -63,7 +63,6 @@ export default function Navbar() {
                 window.dispatchEvent(
                     new CustomEvent("authChanged", { detail: null })
                 );
-                alert("Desconectado com sucesso!");
                 setUser(null);
                 setMenuOpen(false);
                 router.push("/login");
