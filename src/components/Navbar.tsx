@@ -58,7 +58,7 @@ export default function Navbar() {
 
     async function handleLogout() {
         try {
-            setLogoutLoading(true); // 👈 AQUI
+            setLogoutLoading(true); 
             const res = await fetch("/api/auth/logout", {
                 method: "POST",
             });
@@ -75,7 +75,7 @@ export default function Navbar() {
         } catch {
             alert("Erro ao desconectar");
         } finally {
-            setLogoutLoading(false); // 👈 AQUI
+            setLogoutLoading(false); 
         }
     }
 
@@ -130,7 +130,7 @@ export default function Navbar() {
                                     onClick={handleLogout}
                                     variant="danger"
                                     width="w-28"
-                                    disabled={logoutLoading} // 👈 AQUI
+                                    disabled={logoutLoading}
                                 />
                             </div>
 
@@ -172,7 +172,7 @@ export default function Navbar() {
                                         onClick={handleLogout}
                                         variant="danger"
                                         width="w-full"
-                                        disabled={logoutLoading} // 👈 AQUI TBM
+                                        disabled={logoutLoading}
                                     />
                                 </div>
                             )}
