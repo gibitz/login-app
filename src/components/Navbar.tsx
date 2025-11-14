@@ -32,6 +32,11 @@ export default function Navbar() {
         }
     }
     useEffect(() => {
+        if (!document.cookie.includes("token=")) {
+            setLoading(false);
+            return;
+        }
+
         fetchUser();
     }, []);
 
