@@ -12,6 +12,7 @@ export default function Navbar() {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [logoutLoading, setLogoutLoading] = useState(false); // 👈 AQUI
 
     async function fetchUser() {
         try {
@@ -31,6 +32,7 @@ export default function Navbar() {
             setLoading(false);
         }
     }
+
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchUser();
@@ -56,6 +58,7 @@ export default function Navbar() {
 
     async function handleLogout() {
         try {
+            setLogoutLoading(true); // 👈 AQUI
             const res = await fetch("/api/auth/logout", {
                 method: "POST",
             });
@@ -63,7 +66,6 @@ export default function Navbar() {
                 window.dispatchEvent(
                     new CustomEvent("authChanged", { detail: null })
                 );
-                alert("Desconectado com sucesso!");
                 setUser(null);
                 setMenuOpen(false);
                 router.push("/login");
@@ -72,6 +74,8 @@ export default function Navbar() {
             }
         } catch {
             alert("Erro ao desconectar");
+        } finally {
+            setLogoutLoading(false); // 👈 AQUI
         }
     }
 
@@ -126,6 +130,7 @@ export default function Navbar() {
                                     onClick={handleLogout}
                                     variant="danger"
                                     width="w-28"
+                                    disabled={logoutLoading} // 👈 AQUI
                                 />
                             </div>
 
@@ -167,6 +172,7 @@ export default function Navbar() {
                                         onClick={handleLogout}
                                         variant="danger"
                                         width="w-full"
+                                        disabled={logoutLoading} // 👈 AQUI TBM
                                     />
                                 </div>
                             )}
